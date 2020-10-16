@@ -2,20 +2,19 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:puppy_world/models/dog.dart';
-import 'package:http/http.dart' as http;
 import 'package:puppy_world/models/dogs.dart';
 import 'package:puppy_world/services/common_api.dart';
 
 class ExploreApiService {
   static Future<Dog> getDogProfileById({
-    @required String id,
+    @required String dogId,
   }) async {
     try {
-      var url = 'http://puppyworld.azurewebsites.net/api/v1/profiles/$id';
+      var url = CommonApiService.getDogProfileUrl(dogId);
 
-      var response = await http.get(url);
-      if (response.statusCode == 200) {
-        return Dog.fromJson(jsonDecode(response.body));
+      var response = await CommonApiService.getResponse(url, false);
+      if (response.success) {
+        return Dog.fromJson(jsonDecode(response.result));
       }
       return null;
     } catch (e) {
