@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:puppy_world/screens/explore_screen.dart';
-import 'package:puppy_world/screens/profile_screen.dart';
+import 'package:puppy_world/screens/adopt/adopt_screen.dart';
+import 'package:puppy_world/screens/account/account_screen.dart';
+import 'package:puppy_world/screens/feeds/store_screen.dart';
+import 'package:puppy_world/screens/store/store_screen.dart';
 
-import 'home_screen.dart';
+import 'explore/explore_screen.dart';
 
-class TabScreen extends StatefulWidget {
+class MainTabScreen extends StatefulWidget {
   @override
-  _TabScreenState createState() => _TabScreenState();
+  _MainTabScreenState createState() => _MainTabScreenState();
 }
 
-class _TabScreenState extends State<TabScreen> {
+class _MainTabScreenState extends State<MainTabScreen> {
   int _index = 1;
   final List<Widget> _children = [
-    ExploreScreen(), //Feeds
-    HomeScreen(), //Explore
-    AccountScreen(), //Adopt
-    AccountScreen(), //Store
+    FeedsScreen(), //Feeds
+    ExploreScreen(), //Explore
+    AdoptScreen(), //Adopt
+    StoreScreen(), //Store
     AccountScreen(), //Account
   ];
   @override
@@ -50,7 +52,7 @@ class _TabScreenState extends State<TabScreen> {
   BottomNavigationBarItem _buildBottomNavBar(IconData iconData, String title) {
     return BottomNavigationBarItem(
       icon: Icon(iconData),
-      title: Text(title),
+      label: title,
     );
   }
 }

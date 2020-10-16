@@ -1,3 +1,3 @@
-export './dog_details_provider.dart';
-export './home_page_provider.dart';
-export './home_page_search_provider.dart';
+export './dog_profile_provider.dart';
+export 'dog_tiles_provider.dart';
+export 'dog_tiles_search_provider.dart';

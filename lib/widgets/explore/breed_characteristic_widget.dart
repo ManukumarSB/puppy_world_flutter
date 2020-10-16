@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:puppy_world/providers/providers.dart';
 
-import '../models/breed_characteristic.dart';
-import '../providers/dog_details_provider.dart';
+import '../../models/breed_characteristic.dart';
 
 class BreedCharacteristicWidget extends StatelessWidget {
-  final DogDetailsProvider dogDetailsProvider;
+  final DogProfileProvider dogDetailsProvider;
   const BreedCharacteristicWidget({this.dogDetailsProvider});
 
   @override

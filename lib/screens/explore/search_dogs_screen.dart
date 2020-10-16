@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/home_page_search_provider.dart';
-import '../widgets/dogs_list_widget.dart';
-import '../widgets/search_status_widget.dart';
-import '../widgets/search_widget.dart';
+import '../../providers/dog_tiles_search_provider.dart';
+import '../../widgets/explore/dog_tile_widget.dart';
+import '../../widgets/search_status_widget.dart';
+import '../../widgets/search_widget.dart';
 
 class SearchDogsScreen extends StatelessWidget {
   @override
@@ -38,8 +38,8 @@ class SearchDogsScreen extends StatelessWidget {
   }
 
   Widget _buildBody(BuildContext context) {
-    return Consumer<HomePageSearchProvider>(
-      builder: (_, HomePageSearchProvider value, __) {
+    return Consumer<DogTilesSearchProvider>(
+      builder: (_, DogTilesSearchProvider value, __) {
         if (!value.hasSearchKey) {
           return SearchStatusWidget(SearchMessages.START_TYPING);
         }
@@ -47,7 +47,7 @@ class SearchDogsScreen extends StatelessWidget {
           return SearchStatusWidget(SearchMessages.SEARCHING);
         }
 
-        if (value.hasAnyContactFound) {
+        if (value.hasSearchResult) {
           return SearchStatusWidget(SearchMessages.NO_CONTACT_FOUND);
         }
 
@@ -58,7 +58,7 @@ class SearchDogsScreen extends StatelessWidget {
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
-              child: DogsListWidget(
+              child: DogTileWidget(
                 dogs: value.dogs,
                 loadingDogListInProgress: value.loadingDogListInProgress,
                 loadNextPage: value.loadNextPage,
@@ -73,11 +73,11 @@ class SearchDogsScreen extends StatelessWidget {
 
   _onSearch(String searchKey, BuildContext context) async {
     if (searchKey == null || searchKey.isEmpty) {
-      Provider.of<HomePageSearchProvider>(context, listen: false).clearSearch();
+      Provider.of<DogTilesSearchProvider>(context, listen: false).clearSearch();
       return;
     }
     if (searchKey.length > 2) {
-      await Provider.of<HomePageSearchProvider>(context, listen: false)
+      await Provider.of<DogTilesSearchProvider>(context, listen: false)
           .searchDogs(searchKey);
     }
   }

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import '../widgets/tile_loading_skeleton_widget.dart';
-import '../widgets/widgets.dart';
-import '../models/dog.dart';
-import '../providers/dog_details_provider.dart';
-import '../theme/style.dart';
+import '../../widgets/tile_loading_skeleton_widget.dart';
+import '../../widgets/widgets.dart';
+import '../../models/dog.dart';
+import '../../providers/dog_profile_provider.dart';
+import '../../theme/style.dart';
 
 class DogDetailsScreen extends StatefulWidget {
   final String id;
@@ -29,14 +29,14 @@ class _DogDetailsScreenState extends State<DogDetailsScreen> {
 
   _initData() async {
     var homePageProvider =
-        Provider.of<DogDetailsProvider>(context, listen: false);
+        Provider.of<DogProfileProvider>(context, listen: false);
     await homePageProvider.fetchDogDetails(widget.id);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<DogDetailsProvider>(
-      builder: (_, DogDetailsProvider value, __) {
+    return Consumer<DogProfileProvider>(
+      builder: (_, DogProfileProvider value, __) {
         if (value.dog == null || value.loadingDogDetailsInProgress)
           return _buildSkeletonLoader();
         return AnnotatedRegion<SystemUiOverlayStyle>(

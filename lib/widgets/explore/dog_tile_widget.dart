@@ -2,19 +2,19 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:puppy_world/models/dog.dart';
-import 'package:puppy_world/providers/dog_details_provider.dart';
-import 'package:puppy_world/screens/dog_details_screen.dart';
+import 'package:puppy_world/providers/providers.dart';
+import 'package:puppy_world/screens/explore/dog_details_screen.dart';
 import 'package:puppy_world/widgets/text_highlight_widget.dart';
 import 'package:puppy_world/widgets/tile_loading_skeleton_widget.dart';
 
-class DogsListWidget extends StatelessWidget {
+class DogTileWidget extends StatelessWidget {
   final List<Dog> dogs;
 
   final bool loadingDogListInProgress;
   final Function loadNextPage;
   final String searchKey;
 
-  const DogsListWidget(
+  const DogTileWidget(
       {Key key,
       this.dogs,
       this.loadingDogListInProgress,
@@ -51,7 +51,7 @@ class DogsListWidget extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => ChangeNotifierProvider(
-              create: (_) => DogDetailsProvider(),
+              create: (_) => DogProfileProvider(),
               child: DogDetailsScreen(id: dog.id, dog: dog),
             ),
           ),

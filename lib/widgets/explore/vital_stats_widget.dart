@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:puppy_world/providers/dog_details_provider.dart';
+import 'package:puppy_world/providers/providers.dart';
 
 class VitalStatsWidget extends StatelessWidget {
-  final DogDetailsProvider dogDetailsProvider;
+  final DogProfileProvider dogDetailsProvider;
 
   const VitalStatsWidget({this.dogDetailsProvider});
 

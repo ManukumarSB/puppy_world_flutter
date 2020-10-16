@@ -22,5 +22,5 @@ class SearchStatusWidget extends StatelessWidget {
 class SearchMessages {
   static const START_TYPING = 'Start typing to search';
   static const SEARCHING = 'Searching ...';
-  static const NO_CONTACT_FOUND = 'No Dogs Found 🔭';
+  static const NO_CONTACT_FOUND = 'No Search Result 🔭';
 }

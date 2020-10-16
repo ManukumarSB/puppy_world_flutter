@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/home_page_provider.dart';
-import '../widgets/dogs_list_widget.dart';
-import '../widgets/search_text_field.dart';
-import '../widgets/tile_loading_skeleton_widget.dart';
+import '../../providers/dog_tiles_provider.dart';
+import '../../widgets/explore/dog_tile_widget.dart';
+import '../../widgets/search_text_field.dart';
+import '../../widgets/tile_loading_skeleton_widget.dart';
 
-class HomeScreen extends StatefulWidget {
+class ExploreScreen extends StatefulWidget {
   static const routeName = 'tabs/user/home';
 
-  const HomeScreen({Key key}) : super(key: key);
+  const ExploreScreen({Key key}) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _ExploreScreenState createState() => _ExploreScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _ExploreScreenState extends State<ExploreScreen> {
   @override
   void initState() {
     super.initState();
@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _initData() async {
     var homePageProvider =
-        Provider.of<HomePageProvider>(context, listen: false);
+        Provider.of<DogTilesProvider>(context, listen: false);
     if (homePageProvider.dogs.isEmpty) {
       await homePageProvider.fetchDogsList();
     }
@@ -44,8 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-        child: Consumer<HomePageProvider>(
-          builder: (_, HomePageProvider value, __) {
+        child: Consumer<DogTilesProvider>(
+          builder: (_, DogTilesProvider value, __) {
             return NotificationListener(
               onNotification: (ScrollNotification scrollNotification) {
                 return _onListScroll(scrollNotification, value);
@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   bool _onListScroll(
-      ScrollNotification scrollNotification, HomePageProvider value) {
+      ScrollNotification scrollNotification, DogTilesProvider value) {
     if (scrollNotification is ScrollEndNotification &&
         scrollNotification.metrics.pixels >=
             scrollNotification.metrics.maxScrollExtent) {
@@ -90,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildSliverList(HomePageProvider value) {
+  Widget _buildSliverList(DogTilesProvider value) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
@@ -100,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                   child: TileLoadingSkeletonWidget(),
                 )
-              : DogsListWidget(
+              : DogTileWidget(
                   dogs: value.dogs,
                   loadingDogListInProgress: value.loadingDogListInProgress,
                   loadNextPage: value.loadNextPage,

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ExploreScreen extends StatelessWidget {
-  static const routeName = 'tabs/user/explore';
-
-  const ExploreScreen({Key key}) : super(key: key);
+class FeedsScreen extends StatelessWidget {
+  const FeedsScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

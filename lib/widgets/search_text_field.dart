@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:puppy_world/providers/home_page_search_provider.dart';
-import 'package:puppy_world/screens/search_dogs_screen.dart';
+import 'package:puppy_world/providers/dog_tiles_search_provider.dart';
+import 'package:puppy_world/screens/explore/search_dogs_screen.dart';
 
 class SearchTextField extends StatelessWidget {
   @override
@@ -13,7 +13,7 @@ class SearchTextField extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => ChangeNotifierProvider(
-              create: (_) => HomePageSearchProvider(),
+              create: (_) => DogTilesSearchProvider(),
               child: SearchDogsScreen(),
             ),
           ),

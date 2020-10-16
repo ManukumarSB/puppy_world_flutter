@@ -1,11 +1,11 @@
-export 'description_widget.dart';
-export 'dogs_list_widget.dart';
+export 'explore/description_widget.dart';
+export 'explore/dog_tile_widget.dart';
 export 'search_status_widget.dart';
 export 'search_text_field.dart';
 export 'search_widget.dart';
 export 'skeleton_widget.dart';
 export 'text_highlight_widget.dart';
 export 'tile_loading_skeleton_widget.dart';
-export './vital_stats_widget.dart';
-export './breed_characteristic_widget.dart';
+export 'explore/vital_stats_widget.dart';
+export 'explore/breed_characteristic_widget.dart';
 export './sliver_app_bar_widget.dart';

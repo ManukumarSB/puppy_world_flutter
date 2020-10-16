@@ -1,5 +1,5 @@
-export './dog_details_screen.dart';
-export './explore_screen.dart';
-export './home_screen.dart';
-export './profile_screen.dart';
-export './search_dogs_screen.dart';
+export 'explore/dog_details_screen.dart';
+export 'adopt/adopt_screen.dart';
+export 'explore/explore_screen.dart';
+export 'account/account_screen.dart';
+export 'explore/search_dogs_screen.dart';
