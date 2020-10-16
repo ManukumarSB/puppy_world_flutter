@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "424085767859",
+    "firebase_url": "https://fir-messaging-407d9.firebaseio.com",
+    "project_id": "fir-messaging-407d9",
+    "storage_bucket": "fir-messaging-407d9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:424085767859:android:5bec08c15efe60181692c6",
+        "android_client_info": {
+          "package_name": "com.example.puppy_world"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "424085767859-vhai7u2kgquhha7hmceh2hj7he8fu6un.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUaS45DBF9kL1cD5XlP4umcXh3K6WRUxg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "424085767859-vhai7u2kgquhha7hmceh2hj7he8fu6un.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
