@@ -37,6 +37,7 @@ class DogTilesSearchProvider extends DogTilesProvider {
     await fetchDogsList();
   }
 
+  @override
   Future fetchDogsList() async {
     try {
       loadingDogListInProgressProtected = true;

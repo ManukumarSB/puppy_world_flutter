@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
 import '../../widgets/tile_loading_skeleton_widget.dart';
 import '../../widgets/widgets.dart';
 import '../../models/dog.dart';

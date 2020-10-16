@@ -12,7 +12,7 @@ class DogProfileProvider with ChangeNotifier {
     try {
       _loadingDogDetailsInProgress = true;
       notifyListeners();
-      final result = await ExploreApiService.getDogProfileById(id: dogId);
+      final result = await ExploreApiService.getDogProfileById(dogId: dogId);
       _dog = result;
     } finally {
       _loadingDogDetailsInProgress = false;

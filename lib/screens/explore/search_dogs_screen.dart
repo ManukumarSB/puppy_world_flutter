@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../providers/dog_tiles_search_provider.dart';
 import '../../widgets/explore/dog_tile_widget.dart';
 import '../../widgets/search_status_widget.dart';

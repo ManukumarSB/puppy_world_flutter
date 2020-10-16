@@ -7,15 +7,14 @@ import '../../widgets/search_text_field.dart';
 import '../../widgets/tile_loading_skeleton_widget.dart';
 
 class ExploreScreen extends StatefulWidget {
-  static const routeName = 'tabs/user/home';
-
   const ExploreScreen({Key key}) : super(key: key);
 
   @override
   _ExploreScreenState createState() => _ExploreScreenState();
 }
 
-class _ExploreScreenState extends State<ExploreScreen> {
+class _ExploreScreenState extends State<ExploreScreen>
+    with AutomaticKeepAliveClientMixin<ExploreScreen> {
   @override
   void initState() {
     super.initState();
@@ -23,6 +22,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
       _initData();
     });
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   _initData() async {
     var homePageProvider =
@@ -34,6 +36,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: _buildAppBar(),
       body: _buildBody(),

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
 class AdoptScreen extends StatelessWidget {
-  static const routeName = 'tabs/user/explore';
-
   const AdoptScreen({Key key}) : super(key: key);
 
   @override
