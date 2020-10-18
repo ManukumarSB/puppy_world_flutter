@@ -1,12 +1,12 @@
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 
-import '../../explore/providers.dart/providers.dart';
+import '../../explore/providers/pet_profile_provider.dart';
 import '../../theme/style.dart';
 
 class SliverAppBarWidget extends StatelessWidget {
-  final DogProfileProvider dogDetailsProvider;
-  const SliverAppBarWidget({this.dogDetailsProvider});
+  final PetProfileProvider petDetailsProvider;
+  const SliverAppBarWidget({this.petDetailsProvider});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class SliverAppBarWidget extends StatelessWidget {
             ),
             width: MediaQuery.of(context).size.width * .7,
             child: Text(
-              dogDetailsProvider.dog?.name ?? '',
+              petDetailsProvider.pet?.name ?? '',
               style: Theme.of(context).textTheme.headline6.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
@@ -44,7 +44,7 @@ class SliverAppBarWidget extends StatelessWidget {
               dotSize: 5,
               dotColor: Colors.grey,
               indicatorBgPadding: 10.0,
-              images: dogDetailsProvider.dog?.getDogImages,
+              images: petDetailsProvider.pet?.getPetImages,
               borderRadius: true,
             ),
           ),

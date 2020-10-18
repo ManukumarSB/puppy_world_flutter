@@ -14,10 +14,10 @@ class CommonApiService {
   static const String _ProfilePath = "profiles/";
   static const String _TilesPath = "tiles?limit=%d&skip=%d&searchKey=%s";
 
-  static String getDogTilesUrl(int limit, int skip, String searchKey) =>
+  static String getPetTilesUrl(int limit, int skip, String searchKey) =>
       sprintf("$ApiEndpoint$_ProfilePath$_TilesPath", [limit, skip, searchKey]);
 
-  static String getDogProfileUrl(String dogId) =>
+  static String getPetProfileUrl(String dogId) =>
       sprintf("$ApiEndpoint$_ProfilePath$dogId", [dogId]);
 
   static Future<RequestResponse> getResponse(

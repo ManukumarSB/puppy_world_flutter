@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:puppy_world/account/screens.dart/account_screen.dart';
-import 'package:puppy_world/adopt/screens.dart/adopt_screen.dart';
-import 'package:puppy_world/explore/screens.dart/explore_screen.dart';
-import 'package:puppy_world/feeds/screens.dart/store_screen.dart';
-import 'package:puppy_world/store/screens.dart/store_screen.dart';
+
+import '../../account/screens/account_screen.dart';
+import '../../adopt/screens/adopt_screen.dart';
+import '../../explore/screens/explore_screen.dart';
+import '../../feeds/screens/store_screen.dart';
+import '../../store/screens/store_screen.dart';
 
 class MainTabScreen extends StatefulWidget {
   @override

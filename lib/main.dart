@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import './theme/style.dart';
 import './common/screens/main_tab_screen.dart';
-import './explore/providers.dart/providers.dart';
+import './explore/providers/providers.dart';
 
 void main() async {
   runApp(PuppyWorld());
@@ -15,7 +15,7 @@ class PuppyWorld extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (ctx) => DogTilesProvider(),
+          create: (ctx) => PetTilesProvider(),
         ),
       ],
       child: MaterialApp(
