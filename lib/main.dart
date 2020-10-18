@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:puppy_world/providers/dog_tiles_provider.dart';
-import 'package:puppy_world/screens/main_tab_screen.dart';
-import 'package:puppy_world/theme/style.dart';
+
+import './theme/style.dart';
+import './common/screens/main_tab_screen.dart';
+import './explore/providers/providers.dart';
 
 void main() async {
   runApp(PuppyWorld());
@@ -14,7 +15,7 @@ class PuppyWorld extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (ctx) => DogTilesProvider(),
+          create: (ctx) => PetTilesProvider(),
         ),
       ],
       child: MaterialApp(
