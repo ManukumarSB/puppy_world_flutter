@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:puppy_world/common/widgets/widgets.dart';
 
 class StoreScreen extends StatelessWidget {
   const StoreScreen({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xfffb3f00),
-      ),
+      appBar: AppBars.mainAppBar(context),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
