@@ -1,7 +1,7 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 
-import '../../account/screens/account_screen.dart';
+import '../../user_auth/screens/user_auth.dart';
 import '../../adopt/screens/adopt_screen.dart';
 import '../../explore/screens/explore_screen.dart';
 import '../../feeds/screens/store_screen.dart';
@@ -64,7 +64,7 @@ class _MainTabScreenState extends State<MainTabScreen> {
       TabItem(4, TabItem.storeTabKey, "Store", Icons.shopping_basket,
           StoreScreen()),
       TabItem(5, TabItem.accountTabKey, "Account", Icons.account_circle,
-          AccountScreen()),
+          UserAuth()),
     ];
     tabs.sort((x, y) => x.order.compareTo(y.order)); //Sort based on order
     return tabs;

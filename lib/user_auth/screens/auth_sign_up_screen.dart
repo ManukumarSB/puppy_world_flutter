@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+import '../../common/helpers/validators.dart';
+import '../../common/widgets/clearable_text_form_field_widget.dart';
 import '../../common/models/user/user.dart';
 import '../../common/models/user/user_details.dart';
 import '../../common/widgets/primary_button_widget.dart';
@@ -12,15 +14,17 @@ import '../../user_auth/providers/auth_provider.dart';
 
 class SignUpScreen extends StatefulWidget {
   static const routeName = '/auth-signUp';
+  final VoidCallback onBack;
 
   final String email;
-  SignUpScreen({this.email});
+  SignUpScreen({this.email, this.onBack});
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
   File sampleImage;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
@@ -28,6 +32,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _phoneController = TextEditingController();
 
   final TextEditingController _confirmPassController = TextEditingController();
+  bool _signUpProgress = false;
 
   Future getImage(var imageSource) async {
     var tempImage = await ImagePicker.pickImage(
@@ -64,62 +69,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: Scaffold(
         appBar: _buildAppBar(),
         body: SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.all(16.0),
-            color: Colors.grey[50],
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                InkWell(
-                  onTap: () {
-                    _buildImagePickerDialog();
-                  },
-                  child: _buildAddPhoto(),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    _buildDivider(),
-                    _buildTextField('Full Name', _fullNameController),
-                    _buildDivider(),
-                    _buildTextField('Phone', _phoneController),
-                    _buildDivider(),
-                    _buildTextField('Email', _emailController),
-                    _buildDivider(),
-                    _buildTextField('Password', _passController),
-                    _buildDivider(),
-                    _buildTextField(
-                        'Re-enter password', _confirmPassController),
-                    _buildDivider(),
-                    _buildDivider(),
-                    PrimaryButtonWidget(false, 'Continue', () async {
-                      final authProvider =
-                          Provider.of<AuthProvider>(context, listen: false);
-                      User user = User(
-                        null,
-                        _fullNameController.text,
-                        null,
-                        _emailController.text,
-                        UserDetails(
-                          null,
-                          null,
-                          null,
-                          null,
-                          Mobile(null, _phoneController.text),
-                          Location(null, null, null, null, null, null),
-                        ),
-                        null,
-                      );
-                      authProvider.createUser(
-                        user: user,
-                        password: _passController.text,
-                        profilePicture: sampleImage,
-                      );
-                    }),
-                  ],
-                ),
-              ],
+          child: Form(
+            key: _formKey,
+            child: Container(
+              padding: EdgeInsets.all(16.0),
+              color: Colors.grey[50],
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  InkWell(
+                    onTap: () {
+                      _buildImagePickerDialog();
+                    },
+                    child: _buildAddPhoto(),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      _buildFullNameForm(),
+                      _buildPhoneForm(),
+                      _buildEmailForm(),
+                      _buildPasswordForm(),
+                      _buildConfirmPasswordForm(),
+                      _buildDivider(),
+                      PrimaryButtonWidget(
+                          _signUpProgress, 'Continue', _onClickContinue)
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -218,16 +197,155 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return const SizedBox(height: 16);
   }
 
-  Widget _buildTextField(
-      String hintText, TextEditingController fullNameController) {
-    return TextField(
-      controller: fullNameController,
-      decoration: InputDecoration(
-        hintText: hintText,
-        labelText: hintText,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25.0),
-        ),
+  bool _confirmPassword() {
+    if (_confirmPassController.text != _passController.text) {
+      return false;
+    }
+    return true;
+  }
+
+  _onClickContinue() async {
+    try {
+      if (_signUpProgress || !_formKey.currentState.validate()) {
+        return;
+      }
+      _confirmPassword();
+
+      setState(() {
+        _signUpProgress = true;
+      });
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      User user = User(
+        null,
+        _fullNameController.text,
+        null,
+        _emailController.text,
+        UserDetails(null, null, null, null, Mobile(null, _phoneController.text),
+            Location(null, null, null, null, null, null)),
+        null,
+      );
+      await authProvider.createUser(
+        user: user,
+        password: _passController.text,
+        profilePicture: sampleImage,
+      );
+    } finally {
+      setState(() {
+        _signUpProgress = false;
+      });
+    }
+  }
+
+  Widget _buildFullNameForm() {
+    return ListTile(
+      leading: Container(
+        height: double.infinity,
+        child: const Icon(Icons.person),
+      ),
+      title: ClearableTextFormFieldWidget(
+        controller: _fullNameController,
+        labelText: 'Full Name',
+        keyboardType: TextInputType.phone,
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'required';
+          } else if (value.length > 25) {
+            return 'Name should be less than 25 characters';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  Widget _buildPhoneForm() {
+    return ListTile(
+      leading: Container(
+        height: double.infinity,
+        child: const Icon(Icons.phone),
+      ),
+      title: ClearableTextFormFieldWidget(
+        controller: _phoneController,
+        labelText: 'Mobile',
+        textCapitalization: TextCapitalization.words,
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'required';
+          } else if (value.length < 10) {
+            return 'invalid phone number';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  Widget _buildEmailForm() {
+    return ListTile(
+      leading: Container(
+        height: double.infinity,
+        child: const Icon(Icons.email),
+      ),
+      title: ClearableTextFormFieldWidget(
+        controller: _emailController,
+        labelText: 'Email',
+        keyboardType: TextInputType.emailAddress,
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'required';
+          } else if (!Validators.isValidEmail(value)) {
+            return 'invalid email';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  Widget _buildPasswordForm() {
+    return ListTile(
+      leading: Container(
+        height: double.infinity,
+        child: const Icon(Icons.security),
+      ),
+      title: ClearableTextFormFieldWidget(
+        controller: _passController,
+        labelText: 'Password',
+        obscureText: true,
+        validator: (value) {
+          if (value.isEmpty) {
+            return 'required';
+          } else if (!Validators.validatePassword(
+            _passController.text,
+          )) {
+            return 'Please enter strong password which contain capital and special characters.';
+          }
+          return null;
+        },
+        textInputAction: TextInputAction.done,
+      ),
+    );
+  }
+
+  Widget _buildConfirmPasswordForm() {
+    return ListTile(
+      leading: Container(
+        height: double.infinity,
+        child: const Icon(null),
+      ),
+      title: ClearableTextFormFieldWidget(
+        controller: _confirmPassController,
+        labelText: 'Re-Enter Password',
+        obscureText: true,
+        validator: (value) {
+          if (value.isEmpty) {
+            return 'required';
+          } else if (!_confirmPassword()) {
+            return 'Password mismatch';
+          }
+          return null;
+        },
+        textInputAction: TextInputAction.done,
       ),
     );
   }

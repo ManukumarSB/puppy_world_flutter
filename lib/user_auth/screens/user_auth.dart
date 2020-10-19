@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:puppy_world/user_auth/screens/screens.dart';
 
+import '../../account/screens/account_screen.dart';
+import '../../user_auth/screens/screens.dart';
 import '../../user_auth/providers/auth_provider.dart';
-
-import 'auth_home_screen.dart';
+import './auth_home_screen.dart';
 
 class UserAuth extends StatelessWidget {
   static const routeName = '/user-auth';
@@ -19,15 +19,22 @@ class UserAuth extends StatelessWidget {
       child: Navigator(
         initialRoute: arguments != null
             ? arguments['routeName']
-            : AuthHomeScreen.routeName,
+            : AccountScreen.routeName,
         onGenerateRoute: (RouteSettings settings) {
           WidgetBuilder builder;
           switch (settings.name) {
+            case AccountScreen.routeName:
+              builder = (_) => AccountScreen();
+              break;
             case AuthHomeScreen.routeName:
               builder = (_) => AuthHomeScreen();
               break;
             case SignUpScreen.routeName:
-              builder = (_) => SignUpScreen();
+              builder = (_) => SignUpScreen(
+                    onBack: () {
+                      Navigator.of(context).pop();
+                    },
+                  );
               break;
 
             default:
