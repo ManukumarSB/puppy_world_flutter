@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:puppy_world/common/widgets/widgets.dart';
+import 'package:provider/provider.dart';
+
+import '../../common/widgets/widgets.dart';
+import '../../common/widgets/primary_button_widget.dart';
+import '../../user_auth/providers/auth_provider.dart';
+import '../../user_auth/screens/user_auth.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({Key key}) : super(key: key);
@@ -9,25 +14,42 @@ class AccountScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBars.mainAppBar(context),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              child: Image.asset(
-                'assets/images/coming_soon.png',
-                width: 120,
-                height: 120,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                child: Image.asset(
+                  'assets/images/coming_soon.png',
+                  width: 120,
+                  height: 120,
+                ),
               ),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              "Coming soon...",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
+              const SizedBox(height: 12),
+              Text(
+                "Coming soon...",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 16),
+              PrimaryButtonWidget(false, 'Login', () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) {
+                    return ChangeNotifierProvider(
+                      create: (BuildContext context) {
+                        return AuthProvider();
+                      },
+                      child: UserAuth(),
+                    );
+                  }),
+                );
+              }),
+            ],
+          ),
         ),
       ),
     );
