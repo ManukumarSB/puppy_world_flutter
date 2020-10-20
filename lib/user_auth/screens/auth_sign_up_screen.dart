@@ -15,10 +15,8 @@ import '../../user_auth/providers/auth_provider.dart';
 class SignUpScreen extends StatefulWidget {
   static const routeName = '/auth-signUp';
   final VoidCallback onBack;
-
   final String email;
   SignUpScreen({this.email, this.onBack});
-  @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
 
