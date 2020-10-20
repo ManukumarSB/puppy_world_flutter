@@ -1,5 +1,5 @@
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 
 import '../../user_auth/screens/user_auth.dart';
 import '../../adopt/screens/adopt_screen.dart';
@@ -48,7 +48,7 @@ class MainTabScreen extends StatefulWidget {
 }
 
 class _MainTabScreenState extends State<MainTabScreen> {
-  static const int defaultTabIndex = 1;
+  static const int defaultTabIndex = 4;
 
   int _selectedIndex = defaultTabIndex;
   String _currentTab = tabs[defaultTabIndex].tabKey;
@@ -93,23 +93,24 @@ class _MainTabScreenState extends State<MainTabScreen> {
                         navigatorKey: e.navigationKey, tabKey: e.tabKey)))
                 .toList(),
           ),
-          bottomNavigationBar: BottomNavyBar(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            onItemSelected: onTabTap,
-            curve: Curves.decelerate,
-            iconSize: 30,
-            itemCornerRadius: 5,
-            // backgroundColor: Colors.orange[50],
-            showElevation: true,
-            //backgroundColor: Theme.of(context).primaryColor,
-            selectedIndex: _selectedIndex,
+          bottomNavigationBar: TitledBottomNavigationBar(
+            onTap: onTabTap,
+            curve: Curves.linear,
+            enableShadow: true,
+            reverse: true,
+            inactiveStripColor: Colors.grey,
+            activeColor: Theme.of(context).primaryColor,
+            indicatorColor: Theme.of(context).primaryColor,
+            inactiveColor: Colors.grey,
+            currentIndex: _selectedIndex,
             items: tabs
-                .map((e) => BottomNavyBarItem(
-                    icon: Icon(e.icon),
-                    title: Text(e.label),
-                    textAlign: TextAlign.center,
-                    inactiveColor: Colors.grey,
-                    activeColor: Theme.of(context).primaryColor))
+                .map((e) => TitledNavigationBarItem(
+                    icon: e.icon,
+                    title: Text(e.label,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15))
+                    //backgroundColor: Theme.of(context).primaryColor,
+                    ))
                 .toList(),
           )),
     );

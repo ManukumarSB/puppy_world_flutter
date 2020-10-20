@@ -1,34 +1,33 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import '../../common/models/user/user.dart';
+import '../../common/helpers/rest_requests_builder.dart';
+import '../../common/services/rest_api_request.dart';
+import '../../common/models/user/user_account.dart';
 
-import '../../common/services/common_api.dart';
+import '../../common/providers/endpoint_url_provider.dart';
 
 class AuthService {
   static Future<bool> verifyEmail({
     @required String email,
   }) async {
     try {
-      var url = CommonApiService.verifyEmail(email);
-
-      var response = await CommonApiService.getResponse(url, false);
-      if (response.success) {
-        return false;
-      }
-      return true;
+      var url = EndpointUrlProvider.verifyEmailUrl(email);
+      return !(await RestApiRequest.get(url, authRequired: false)).success;
     } catch (e) {
       rethrow;
     }
   }
 
-  static Future<RequestResponse> login(
+  static Future<RestApiResponse> login(
       {@required String email, @required String password}) async {
     try {
-      var url = CommonApiService.login();
-
-      var response =
-          await CommonApiService.postResponse(url, false, email, password);
+      var url = EndpointUrlProvider.loginUrl();
+      var header = HeaderBuilder().setToJsonType().build();
+      dynamic body = {"email": email, "password": password};
+      var response = await RestApiRequest.post(url,
+          headers: header, body: body, authRequired: false);
       if (response.success) {
         return response;
       }
@@ -38,19 +37,18 @@ class AuthService {
     }
   }
 
-  static Future<RequestResponse> createUser(
-      {@required User user,
+  static Future<RestApiResponse> createUser(
+      {@required UserAccount user,
       @required String password,
       File profilePicture}) async {
     try {
-      var url = CommonApiService.signUp();
-      var response = await CommonApiService.createUser(
-          url, false, user, password, profilePicture);
-
-      if (response.success) {
-        return response;
-      }
-      return null;
+      var url = EndpointUrlProvider.userUrl();
+      var formData = (await new FormDataBuilder()
+              .addFile("profilePicture", profilePicture))
+          .addText("userData", user)
+          .addText("password", password)
+          .build();
+      return await RestApiRequest.postForm(url, formData, authRequired: false);
     } catch (e) {
       rethrow;
     }

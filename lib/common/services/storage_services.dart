@@ -9,7 +9,6 @@ class StorageService {
       _storageService = StorageService();
       _storageService._storageInstance = await SharedPreferences.getInstance();
     }
-
     return _storageService;
   }
 

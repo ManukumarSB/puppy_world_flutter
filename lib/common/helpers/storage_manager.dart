@@ -1,29 +1,30 @@
 import '../../common/services/storage_services.dart';
 
 class StorageManager {
-  final String _tokenKey = '_pw_token';
-  final String _userIdKey = '_pw_user_id';
-  Future<String> getToken() async {
+  static const String _tokenKey = '_user_auth_token_';
+  static const String _userIdKey = '_user_id_';
+
+  static Future<String> getAuthToken() async {
     final storageService = await StorageService.getInstance();
     return storageService.getValue(_tokenKey);
   }
 
-  Future<bool> setToken(String value) async {
+  static Future<bool> setAuthToken(String value) async {
     final storageService = await StorageService.getInstance();
     return storageService.setValue(_tokenKey, value);
   }
 
-  Future<String> getUserId() async {
+  static Future<String> getUserId() async {
     final storageService = await StorageService.getInstance();
     return storageService.getValue(_userIdKey);
   }
 
-  Future<bool> setUserId(String value) async {
+  static Future<bool> setUserId(String value) async {
     final storageService = await StorageService.getInstance();
     return storageService.setValue(_userIdKey, value);
   }
 
-  clearAllData() async {
+  static clear() async {
     final storageService = await StorageService.getInstance();
     return storageService.clear();
   }
