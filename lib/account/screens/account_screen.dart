@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../user_auth/screens/screens.dart';
 import '../../common/widgets/widgets.dart';
 import '../../common/widgets/primary_button_widget.dart';
 import '../../user_auth/providers/auth_provider.dart';
-import '../../user_auth/screens/user_auth.dart';
 
 class AccountScreen extends StatelessWidget {
+  static const routeName = 'tab/account';
+
   const AccountScreen({Key key}) : super(key: key);
 
   @override
@@ -43,7 +45,7 @@ class AccountScreen extends StatelessWidget {
                       create: (BuildContext context) {
                         return AuthProvider();
                       },
-                      child: UserAuth(),
+                      child: AuthHomeScreen(),
                     );
                   }),
                 );
