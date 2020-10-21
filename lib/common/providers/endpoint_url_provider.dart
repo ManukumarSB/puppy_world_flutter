@@ -9,6 +9,7 @@ class EndpointUrlProvider {
   static const String _verifyEmailPath = "user/exists/email?email=";
   static const String _loginPath = "login";
   static const String _userPath = "user";
+  static const String _feedsPath = "feeds";
 
   static String getPetTilesUrl(int limit, int skip, String searchKey) =>
       sprintf("$apiEndPoint$_profilePath$_tilesPath", [limit, skip, searchKey]);
@@ -22,4 +23,6 @@ class EndpointUrlProvider {
   static String loginUrl() => "$apiEndPoint$_loginPath";
 
   static String userUrl() => "$apiEndPoint$_userPath";
+
+  static String feedsUrl() => "$apiEndPoint$_feedsPath";
 }
