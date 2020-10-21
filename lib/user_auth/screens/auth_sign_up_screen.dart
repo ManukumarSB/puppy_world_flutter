@@ -6,10 +6,8 @@ import 'package:provider/provider.dart';
 
 import '../../common/helpers/validators.dart';
 import '../../common/widgets/clearable_text_form_field_widget.dart';
-import '../../common/models/user/user.dart';
-import '../../common/models/user/user_details.dart';
 import '../../common/widgets/primary_button_widget.dart';
-import '../../common/models/user/location.dart';
+import '../../common/models/user/user_account.dart';
 import '../../user_auth/providers/auth_provider.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -213,15 +211,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
         _signUpProgress = true;
       });
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
-      User user = User(
-        null,
-        _fullNameController.text,
-        null,
-        _emailController.text,
-        UserDetails(null, null, null, null, Mobile(null, _phoneController.text),
-            Location(null, null, null, null, null, null)),
-        null,
-      );
+      UserAccount user = UserAccount(
+          name: _fullNameController.text,
+          userDetails:
+              UserDetails(mobile: Mobile(number: _phoneController.text)),
+          email: _emailController.text);
       await authProvider.createUser(
         user: user,
         password: _passController.text,

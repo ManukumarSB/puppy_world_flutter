@@ -4,19 +4,18 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import '../../common/helpers/storage_manager.dart';
-import '../../common/models/user/user.dart';
+import '../../common/models/user/user_account.dart';
 import '../../user_auth/services/auth_service.dart';
 
 class AuthProvider with ChangeNotifier {
-  StorageManager _tokenManager = StorageManager();
   String _emailAddress;
   bool _verifyNewSupporterEmail = false;
-  User _user;
+  UserAccount _user;
   String get emailAddress {
     return _emailAddress;
   }
 
-  User get user => _user;
+  UserAccount get user => _user;
 
   bool get verifyNewSupporterEmail {
     return _verifyNewSupporterEmail;
@@ -35,12 +34,12 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<User> login(String email, String password) async {
+  Future<UserAccount> login(String email, String password) async {
     try {
       final result = await AuthService.login(email: email, password: password);
       var response = jsonDecode(result.result);
 
-      await _tokenManager.setToken(response['token']);
+      await StorageManager.setAuthToken(response['token'] as String);
       _user = response['user'];
       return _user;
     } finally {
@@ -48,18 +47,18 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<User> createUser(
-      {@required User user,
+  Future<UserAccount> createUser(
+      {@required UserAccount user,
       @required String password,
       File profilePicture}) async {
     try {
       final result = await AuthService.createUser(
           user: user, password: password, profilePicture: profilePicture);
-      // var response = jsonDecode(result.result);
-
-      // await _tokenManager.setToken(response['token']);
-      // _user = response['user'];
-      return _user;
+      if (result.success) {
+        await StorageManager.setAuthToken(result.result['token']);
+        return UserAccount.fromJson(result.result["user"]);
+      }
+      return null;
     } finally {
       notifyListeners();
     }
