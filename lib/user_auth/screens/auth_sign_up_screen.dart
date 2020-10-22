@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+import '../../account/screens/account_screen.dart';
+import '../../common/exceptions/custom_exceptions.dart';
 import '../../common/helpers/validators.dart';
 import '../../common/widgets/clearable_text_form_field_widget.dart';
 import '../../common/widgets/primary_button_widget.dart';
@@ -29,6 +31,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   final TextEditingController _confirmPassController = TextEditingController();
   bool _signUpProgress = false;
+  String _mobileErrorText, _emailErrorText;
 
   Future getImage(var imageSource) async {
     var tempImage = await ImagePicker.pickImage(
@@ -209,6 +212,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
       setState(() {
         _signUpProgress = true;
+        _mobileErrorText = null;
+        _emailErrorText = null;
       });
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       UserAccount user = UserAccount(
@@ -221,6 +226,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
         password: _passController.text,
         profilePicture: sampleImage,
       );
+      Navigator.pushNamedAndRemoveUntil(
+          context, AccountScreen.routeName, (route) => false);
+    } on DuplicateMobileException {
+      _setMobileException('Mobile number already exist');
+    } on DuplicateEmailException {
+      _setEmailException('Email already exist');
     } finally {
       setState(() {
         _signUpProgress = false;
@@ -260,6 +271,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         controller: _phoneController,
         labelText: 'Mobile',
         textCapitalization: TextCapitalization.words,
+        errorText: _mobileErrorText,
         validator: (String value) {
           if (value.isEmpty) {
             return 'required';
@@ -281,6 +293,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       title: ClearableTextFormFieldWidget(
         controller: _emailController,
         labelText: 'Email',
+        errorText: _emailErrorText,
         keyboardType: TextInputType.emailAddress,
         validator: (String value) {
           if (value.isEmpty) {
@@ -340,5 +353,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
         textInputAction: TextInputAction.done,
       ),
     );
+  }
+
+  void _setMobileException(String errorMessage) {
+    setState(() {
+      _mobileErrorText = errorMessage;
+    });
+  }
+
+  void _setEmailException(String errorMessage) {
+    setState(() {
+      _emailErrorText = errorMessage;
+    });
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../common/exceptions/custom_exceptions.dart';
 import '../../user_auth/screens/screens.dart';
 import '../../common/widgets/clearable_text_form_field_widget.dart';
 import '../../common/widgets/primary_button_widget.dart';
@@ -152,8 +153,8 @@ class _AuthHomeScreenState extends State<AuthHomeScreen> {
         _emailAddressController.text.trim(),
         _passwordController.text,
       );
-
-      // widget.onLoginComplete(user);
+    } on IncorrectPasswordException catch (e) {
+      _setPasswordError(e.message);
     } finally {
       setState(() {
         _loginInProgress = false;

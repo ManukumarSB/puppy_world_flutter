@@ -1,11 +1,11 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+
+import '../../common/services/exception_handler.dart';
 import '../../common/helpers/rest_requests_builder.dart';
 import '../../common/services/rest_api_request.dart';
 import '../../common/models/user/user_account.dart';
-
 import '../../common/providers/endpoint_url_provider.dart';
 
 class AuthService {
@@ -14,13 +14,16 @@ class AuthService {
   }) async {
     try {
       var url = EndpointUrlProvider.verifyEmailUrl(email);
-      return !(await RestApiRequest.get(url, authRequired: false)).success;
+      final result =
+          !(await RestApiRequest.get(url, authRequired: false)).success;
+
+      return result;
     } catch (e) {
       rethrow;
     }
   }
 
-  static Future<RestApiResponse> login(
+  static Future<dynamic> login(
       {@required String email, @required String password}) async {
     try {
       var url = EndpointUrlProvider.loginUrl();
@@ -28,16 +31,14 @@ class AuthService {
       dynamic body = {"email": email, "password": password};
       var response = await RestApiRequest.post(url,
           headers: header, body: body, authRequired: false);
-      if (response.success) {
-        return response;
-      }
-      return null;
+
+      return response.success ? response.result : response.handleException();
     } catch (e) {
       rethrow;
     }
   }
 
-  static Future<RestApiResponse> createUser(
+  static Future<dynamic> createUser(
       {@required UserAccount user,
       @required String password,
       File profilePicture}) async {
@@ -45,10 +46,14 @@ class AuthService {
       var url = EndpointUrlProvider.userUrl();
       var formData = (await new FormDataBuilder()
               .addFile("profilePicture", profilePicture))
-          .addText("userData", user)
-          .addText("password", password)
+          .addObject("userData", user)
+          .addString("password", password)
           .build();
-      return await RestApiRequest.postForm(url, formData, authRequired: false);
+
+      final response =
+          await RestApiRequest.postForm(url, formData, authRequired: false);
+
+      return response.success ? response.result : response.handleException();
     } catch (e) {
       rethrow;
     }
