@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import '../../common/services/rest_api_request.dart';
 
+import '../../common/models/feed/post_model.dart';
+import '../../common/services/rest_api_request.dart';
 import '../../common/models/pets/models.dart';
 import '../../common/providers/endpoint_url_provider.dart';
 
-class ExploreApiService {
-  static Future<Pet> getPetProfileById({
+class FeedsApiService {
+  static Future<PostModel> getPostById({
     @required String dogId,
   }) async {
     try {
       var url = EndpointUrlProvider.getPetProfileUrl(dogId);
       var response = await RestApiRequest.get(url, authRequired: false);
       if (response.success) {
-        return Pet.fromJson(response.result);
+        return PostModel.fromJson(response.result);
       }
       return null;
     } catch (e) {

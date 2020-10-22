@@ -87,7 +87,7 @@ class _AuthHomeScreenState extends State<AuthHomeScreen> {
       child: PrimaryButtonWidget(
         _loginInProgress,
         'Next',
-        (Validators.isValidEmail(_emailAddressController.text) &&
+        (Validators.validateEmail(_emailAddressController.text) == null &&
                 (_emailAddressErrorText == null ||
                     _passwordController.text.length > 0))
             ? _submitEmailAddress
@@ -129,7 +129,7 @@ class _AuthHomeScreenState extends State<AuthHomeScreen> {
           ),
         );
       } else {
-        _setEmailAddressError('Please provide password to continue');
+        _setEmailAddressError('Enter password to continue');
       }
     } finally {
       setState(() {
@@ -167,7 +167,7 @@ class _AuthHomeScreenState extends State<AuthHomeScreen> {
       centerTitle: false,
       backgroundColor: Theme.of(context).primaryColor,
       title: Text(
-        'Enter Email to Continue',
+        'Enter email to Continue',
         style: Theme.of(context).textTheme.headline6.copyWith(
             fontWeight: FontWeight.w600, color: Theme.of(context).canvasColor),
       ),
@@ -201,7 +201,7 @@ class _AuthHomeScreenState extends State<AuthHomeScreen> {
                   height: _emailAddressErrorText != null ? 110 : null,
                   child: ClearableTextFormFieldWidget(
                     controller: _emailAddressController,
-                    labelText: 'EMAIL',
+                    labelText: 'Email',
                     keyboardType: TextInputType.emailAddress,
                     onFieldSubmitted: (_) {
                       FocusScope.of(context).requestFocus(_passwordFocusNode);
@@ -217,12 +217,7 @@ class _AuthHomeScreenState extends State<AuthHomeScreen> {
                       if (_passwordController.text.length > 0)
                         _passwordController.clear();
                     },
-                    validator: (String value) {
-                      if (value.isEmpty) {
-                        return 'required';
-                      }
-                      return null;
-                    },
+                    validator: (email) => Validators.validateEmail(email),
                     focusNode: _emailAddressFocusNode,
                   ),
                 ),
@@ -230,18 +225,11 @@ class _AuthHomeScreenState extends State<AuthHomeScreen> {
                 _emailAddressErrorText != null
                     ? ClearableTextFormFieldWidget(
                         controller: _passwordController,
-                        labelText: 'PASSWORD',
+                        labelText: 'Password',
                         obscureText: true,
                         errorText: _passwordErrorText,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'required';
-                          } else if (!Validators.validatePassword(
-                              _passwordController.text)) {
-                            return 'Please enter strong password which contain capital and special characters.';
-                          }
-                          return null;
-                        },
+                        validator: (value) =>
+                            Validators.validatePassword(value),
                         focusNode: _passwordFocusNode,
                         textInputAction: TextInputAction.done,
                       )
@@ -268,7 +256,7 @@ class _AuthHomeScreenState extends State<AuthHomeScreen> {
               horizontal: 16,
             ),
             child: Text(
-              'Trouble logging in?',
+              'Forgot password?',
               style: Theme.of(context).textTheme.button.copyWith(
                     color: Theme.of(context).hintColor,
                     fontWeight: FontWeight.w600,

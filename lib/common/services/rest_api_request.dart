@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as Http;
+
 import '../exceptions/custom_exceptions.dart';
 import '../../common/helpers/response_codes.dart';
 import '../../common/helpers/storage_manager.dart';
@@ -58,7 +60,8 @@ class RestApiRequest {
       if (headers == null) headers = Map<String, String>();
       if (authRequired) headers[authorizationKey] = await _getLoginToken();
       var response = await Http.get(url, headers: headers);
-      return _createResponse(response.statusCode, jsonDecode(response.body));
+      return _createResponse(response.statusCode,
+          response.body.isEmpty ? {} : jsonDecode(response.body));
     } on SocketException {
       throw NoInternetConnection(null);
     } catch (e) {
@@ -73,8 +76,10 @@ class RestApiRequest {
     try {
       if (headers == null) headers = Map<String, String>();
       if (authRequired) headers[authorizationKey] = await _getLoginToken();
-      var response = await Http.post(url, body: body, headers: headers);
-      return _createResponse(response.statusCode, jsonDecode(response.body));
+      var response =
+          await Http.post(url, body: jsonEncode(body), headers: headers);
+      return _createResponse(response.statusCode,
+          response.body.isEmpty ? {} : jsonDecode(response.body));
     } on SocketException {
       throw NoInternetConnection(null);
     } catch (e) {
