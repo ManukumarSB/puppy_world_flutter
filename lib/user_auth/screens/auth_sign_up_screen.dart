@@ -137,7 +137,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       centerTitle: false,
       backgroundColor: Theme.of(context).primaryColor,
       title: Text(
-        'Sign-Up to Continue',
+        'Create your account',
         style: Theme.of(context).textTheme.headline6.copyWith(
             fontWeight: FontWeight.w600, color: Theme.of(context).canvasColor),
       ),
@@ -194,10 +194,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   bool _confirmPassword() {
-    if (_confirmPassController.text != _passController.text) {
-      return false;
-    }
-    return true;
+    if (_confirmPassController.text?.isEmpty ?? true) return false;
+    return _confirmPassController.text == _passController.text;
   }
 
   _onClickContinue() async {
@@ -236,16 +234,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
       title: ClearableTextFormFieldWidget(
         controller: _fullNameController,
-        labelText: 'Full Name',
+        labelText: 'Name',
         keyboardType: TextInputType.phone,
-        validator: (String value) {
-          if (value.isEmpty) {
-            return 'required';
-          } else if (value.length > 25) {
-            return 'Name should be less than 25 characters';
-          }
-          return null;
-        },
+        validator: (name) => Validators.validateName(name),
       ),
     );
   }
@@ -260,14 +251,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         controller: _phoneController,
         labelText: 'Mobile',
         textCapitalization: TextCapitalization.words,
-        validator: (String value) {
-          if (value.isEmpty) {
-            return 'required';
-          } else if (value.length < 10) {
-            return 'invalid phone number';
-          }
-          return null;
-        },
+        validator: (mobile) => Validators.validateMobile(mobile),
       ),
     );
   }
@@ -282,14 +266,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         controller: _emailController,
         labelText: 'Email',
         keyboardType: TextInputType.emailAddress,
-        validator: (String value) {
-          if (value.isEmpty) {
-            return 'required';
-          } else if (!Validators.isValidEmail(value)) {
-            return 'invalid email';
-          }
-          return null;
-        },
+        validator: (email) => Validators.validateEmail(email),
       ),
     );
   }
@@ -304,16 +281,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         controller: _passController,
         labelText: 'Password',
         obscureText: true,
-        validator: (value) {
-          if (value.isEmpty) {
-            return 'required';
-          } else if (!Validators.validatePassword(
-            _passController.text,
-          )) {
-            return 'Please enter strong password which contain capital and special characters.';
-          }
-          return null;
-        },
+        validator: (password) => Validators.validatePassword(password),
         textInputAction: TextInputAction.done,
       ),
     );
@@ -327,12 +295,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
       title: ClearableTextFormFieldWidget(
         controller: _confirmPassController,
-        labelText: 'Re-Enter Password',
+        labelText: 'Re-enter password',
         obscureText: true,
         validator: (value) {
-          if (value.isEmpty) {
-            return 'required';
-          } else if (!_confirmPassword()) {
+          if (!_confirmPassword()) {
             return 'Password mismatch';
           }
           return null;
