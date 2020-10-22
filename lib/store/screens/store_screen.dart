@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:puppy_world/common/widgets/widgets.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import '../../common/widgets/widgets.dart';
 
 class StoreScreen extends StatelessWidget {
   StoreScreen({Key key}) : super(key: key);

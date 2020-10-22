@@ -37,11 +37,12 @@ class AuthProvider with ChangeNotifier {
   Future<UserAccount> login(String email, String password) async {
     try {
       final result = await AuthService.login(email: email, password: password);
-      var response = jsonDecode(result.result);
-
-      await StorageManager.setAuthToken(response['token'] as String);
-      _user = response['user'];
-      return _user;
+      if (result.success) {
+        await StorageManager.setAuthToken(result.result['token'] as String);
+        var _user = result.result['user'];
+        return _user;
+      }
+      return null;
     } finally {
       notifyListeners();
     }

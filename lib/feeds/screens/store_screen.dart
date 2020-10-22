@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:puppy_world/common/widgets/widgets.dart';
+
+import '../../common/widgets/widgets.dart';
 
 class FeedsScreen extends StatelessWidget {
   const FeedsScreen({Key key}) : super(key: key);

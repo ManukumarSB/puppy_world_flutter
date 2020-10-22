@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import '../../common/helpers/rest_requests_builder.dart';
 import '../../common/services/rest_api_request.dart';
-import '../../common/models/user/user_account.dart';
-
+import '../../common/models/user/models.dart';
 import '../../common/providers/endpoint_url_provider.dart';
 
 class AuthService {
@@ -26,12 +24,9 @@ class AuthService {
       var url = EndpointUrlProvider.loginUrl();
       var header = HeaderBuilder().setToJsonType().build();
       dynamic body = {"email": email, "password": password};
-      var response = await RestApiRequest.post(url,
+      var result = await RestApiRequest.post(url,
           headers: header, body: body, authRequired: false);
-      if (response.success) {
-        return response;
-      }
-      return null;
+      return result;
     } catch (e) {
       rethrow;
     }
@@ -48,7 +43,9 @@ class AuthService {
           .addText("userData", user)
           .addText("password", password)
           .build();
-      return await RestApiRequest.postForm(url, formData, authRequired: false);
+      var result =
+          await RestApiRequest.postForm(url, formData, authRequired: true);
+      return result;
     } catch (e) {
       rethrow;
     }
