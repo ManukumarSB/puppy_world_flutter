@@ -4,7 +4,7 @@ import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 import '../../user_auth/screens/user_auth.dart';
 import '../../adopt/screens/adopt_screen.dart';
 import '../../explore/screens/explore_screen.dart';
-import '../../feeds/screens/store_screen.dart';
+import '../../feeds/screens/feeds_screen.dart';
 import '../../store/screens/store_screen.dart';
 
 class MainTabScreenNavigator extends StatelessWidget {
