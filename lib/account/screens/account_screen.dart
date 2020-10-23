@@ -136,7 +136,7 @@ class AccountScreen extends StatelessWidget {
                 FutureBuilder<bool>(
                   future: authProvider.getUserToken,
                   builder: (context, snapshot) {
-                    return snapshot.data == true
+                    return snapshot.data == true && authProvider?.user != null
                         ? Text(
                             authProvider?.user?.name ?? '',
                             style: Theme.of(context).textTheme.headline6,
@@ -144,10 +144,8 @@ class AccountScreen extends StatelessWidget {
                         : InkWell(
                             onTap: () => Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
-                                return ChangeNotifierProvider(
-                                  create: (BuildContext context) {
-                                    return AuthProvider();
-                                  },
+                                return ChangeNotifierProvider.value(
+                                  value: AuthProvider(),
                                   child: AuthHomeScreen(),
                                 );
                               }),

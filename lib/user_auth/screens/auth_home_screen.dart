@@ -153,6 +153,8 @@ class _AuthHomeScreenState extends State<AuthHomeScreen> {
         _emailAddressController.text.trim(),
         _passwordController.text,
       );
+      authProvider.setUser = user;
+      Navigator.of(context).pop();
     } on IncorrectPasswordException catch (e) {
       _setPasswordError(e.message);
     } finally {
