@@ -36,10 +36,17 @@ class FormDataBuilder {
     return this;
   }
 
-  FormDataBuilder addText(String key, Object value,
+  FormDataBuilder addObject(String key, Object value,
       {@optionalTypeArgs String fileName}) {
     if ((key?.isEmpty ?? true)) return this;
     _requestData[key] = jsonEncode(value);
+    return this;
+  }
+
+  FormDataBuilder addString(String key, String value,
+      {@optionalTypeArgs String fileName}) {
+    if ((key?.isEmpty ?? true)) return this;
+    _requestData[key] = value;
     return this;
   }
 }

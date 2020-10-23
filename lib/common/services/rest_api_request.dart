@@ -34,7 +34,7 @@ class RestApiRequest {
 
   static Future<String> _getLoginToken() async {
     var token = await StorageManager.getAuthToken();
-    return token?.isEmpty ?? true ? throw UserAuthException() : token;
+    return token?.isEmpty ?? true ? throw UserAuthException(null) : token;
   }
 
   static RestApiResponse _createResponse(int statusCode, dynamic data) {
@@ -46,10 +46,10 @@ class RestApiRequest {
         return RestApiResponse(false, data);
         break;
       case 403:
-        throw UserAuthException();
+        throw UserAuthException(null);
         break;
       default:
-        throw UnexpectedServerError();
+        throw UnexpectedServerError(null);
     }
   }
 
@@ -63,7 +63,7 @@ class RestApiRequest {
       return _createResponse(response.statusCode,
           response.body.isEmpty ? {} : jsonDecode(response.body));
     } on SocketException {
-      throw NoInternetConnection();
+      throw NoInternetConnection(null);
     } catch (e) {
       throw e;
     }
@@ -81,7 +81,7 @@ class RestApiRequest {
       return _createResponse(response.statusCode,
           response.body.isEmpty ? {} : jsonDecode(response.body));
     } on SocketException {
-      throw NoInternetConnection();
+      throw NoInternetConnection(null);
     } catch (e) {
       throw e;
     }
@@ -97,7 +97,7 @@ class RestApiRequest {
       var response = await Dio().post(url, data: formData, options: options);
       return _createResponse(response.statusCode, response.data);
     } on SocketException {
-      throw NoInternetConnection();
+      throw NoInternetConnection(null);
     } on DioError catch (e) {
       return _createResponse(e.response.statusCode, e.response.data);
     } catch (e) {

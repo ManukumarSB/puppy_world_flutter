@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -16,6 +15,10 @@ class AuthProvider with ChangeNotifier {
   }
 
   UserAccount get user => _user;
+  set setUser(UserAccount userAccount) {
+    _user = userAccount;
+    notifyListeners();
+  }
 
   bool get verifyNewSupporterEmail {
     return _verifyNewSupporterEmail;
@@ -23,6 +26,11 @@ class AuthProvider with ChangeNotifier {
 
   void setEmailAddress(String email) {
     _emailAddress = email;
+  }
+
+  Future<bool> get getUserToken async {
+    final token = await StorageManager.getAuthToken();
+    return token == null ? false : true;
   }
 
   Future<void> verifyEmail(String email) async {
@@ -36,13 +44,11 @@ class AuthProvider with ChangeNotifier {
 
   Future<UserAccount> login(String email, String password) async {
     try {
-      final result = await AuthService.login(email: email, password: password);
-      if (result.success) {
-        await StorageManager.setAuthToken(result.result['token'] as String);
-        var _user = result.result['user'];
-        return _user;
-      }
-      return null;
+      final response =
+          await AuthService.login(email: email, password: password);
+      await StorageManager.setAuthToken(response['token'] as String);
+      _user = UserAccount.fromJson(response['user']);
+      return _user;
     } finally {
       notifyListeners();
     }
@@ -53,13 +59,11 @@ class AuthProvider with ChangeNotifier {
       @required String password,
       File profilePicture}) async {
     try {
-      final result = await AuthService.createUser(
+      final response = await AuthService.createUser(
           user: user, password: password, profilePicture: profilePicture);
-      if (result.success) {
-        await StorageManager.setAuthToken(result.result['token']);
-        return UserAccount.fromJson(result.result["user"]);
-      }
-      return null;
+      await StorageManager.setAuthToken(response['token']);
+      _user = UserAccount.fromJson(response["user"]);
+      return _user;
     } finally {
       notifyListeners();
     }
