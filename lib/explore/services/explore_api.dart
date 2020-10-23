@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../common/services/rest_api_request.dart';
 
+import '../../common/services/rest_api_request.dart';
 import '../../common/models/pets/models.dart';
+import '../../common/helpers/list_response.dart';
 import '../../common/providers/endpoint_url_provider.dart';
 
 class ExploreApiService {
@@ -20,7 +21,7 @@ class ExploreApiService {
     }
   }
 
-  static Future<Pets> getPetProfileTiles({
+  static Future<ResponseList<Pet>> getPetProfileTiles({
     @required int pageNumber,
     String searchKey = '',
     int pageSize = 20,
@@ -30,7 +31,7 @@ class ExploreApiService {
           pageSize, pageNumber * pageSize, searchKey);
       var response = await RestApiRequest.get(url, authRequired: false);
       if (response.success) {
-        return Pets.fromJson(response.result);
+        return ResponseList.fromJson(response.result);
       }
       //TODO:
       return null;
